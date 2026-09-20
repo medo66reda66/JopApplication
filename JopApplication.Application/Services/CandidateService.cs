@@ -117,7 +117,7 @@ namespace JopApplication.Application.Services
 
                 var filepathprofile = Path.Combine(
                     "wwwroot",
-                    "Cv",
+                    "Profile",
                     filenameprofile);
 
                 using (var stream = new FileStream(filepathprofile, FileMode.Create))

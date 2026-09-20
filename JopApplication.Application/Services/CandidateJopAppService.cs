@@ -229,7 +229,7 @@ namespace JopApplication.Application.Services
                 cancellationToken:cancellationToken
                 );
 
-            if(app.Applicationstatuse == Applicationstatuse.Interview && app.Applicationstatuse == Applicationstatuse.Accepted)
+            if(app.Applicationstatuse == Applicationstatuse.Interview || app.Applicationstatuse == Applicationstatuse.Accepted)
             {
                 throw new Exception("No Cancel");
             }
