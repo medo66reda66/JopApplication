@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="14.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.13" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.22.0" />
@@ -15,6 +16,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\JopApplication.Domain\JopApplication.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\Candidate\" />
   </ItemGroup>
 
 </Project>

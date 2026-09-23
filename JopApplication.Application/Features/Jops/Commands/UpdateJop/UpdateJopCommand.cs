@@ -1,15 +1,11 @@
 ﻿using JopApplication.Domain.Models;
+using MediatR;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace JopApplication.Application.Dtos
+namespace JopApplication.Features.Jops.Commands.UpdateJop
 {
-    public class UpdateJopRequest
+    public class UpdateJopCommand :IRequest<Jop>
     {
         [Required]
         public string Title { get; set; } = null!;
@@ -19,5 +15,7 @@ namespace JopApplication.Application.Dtos
         public string Location { get; set; } = null!;
         [Required]
         public IFormFile? ImageUrl { get; set; }
+        [Required]
+        public int jopId { get; set; }
     }
 }

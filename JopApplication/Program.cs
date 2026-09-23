@@ -1,5 +1,6 @@
-
+﻿
 using Hmoe_Maintenance.Services;
+using JopApplication.Application;
 using JopApplication.Application.Interfaces;
 using JopApplication.Application.Services;
 using JopApplication.Domain.Models;
@@ -33,6 +34,11 @@ namespace JopApplication
             {
                 options.UseSqlServer(connectionString);
             });
+
+            builder.Services.AddMediatR(cfg =>
+                cfg.RegisterServicesFromAssembly(
+                    typeof(AssemblyHandler).Assembly));
+
             builder.Services.AddIdentity<Appuser, IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 6;
@@ -69,11 +75,11 @@ namespace JopApplication
             builder.Services.AddScoped<IRepository<Jop>, Repository<Jop>>();
             builder.Services.AddScoped<IRepository<Candidate>, Repository<Candidate>>();
             builder.Services.AddScoped<IRepository<CandidatJopApplication>, Repository<CandidatJopApplication>>();
-            builder.Services.AddScoped<IJopService, JopService>();
+            //builder.Services.AddScoped<IJopService, JopService>();
             builder.Services.AddScoped<ICandidateService , CandidateService>();
             builder.Services.AddScoped<ICandidateJopAppService , CandidateJopAppService>();
             builder.Services.AddScoped<ItokenService, TokenService>();
-            builder.Services.AddScoped<IUserService, UserService>();
+            //builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IDBIntializer, DBIntializer>();
 
             var app = builder.Build();

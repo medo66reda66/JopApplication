@@ -1,7 +1,11 @@
 ﻿using JopApplication.Application.Dtos;
+using JopApplication.Application.Features.Accounts.Commands.LoginAccount;
+using JopApplication.Application.Features.Accounts.Commands.RegisterAccount;
 using JopApplication.Application.Interfaces;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace JopApplication.Controllers
 {
@@ -9,17 +13,30 @@ namespace JopApplication.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _userService;
+       private readonly IMediator _mediator;
 
-        public UserController(IUserService userService)
+        public UserController(IMediator mediator)
         {
-            _userService = userService;
+            _mediator = mediator;
         }
 
         [HttpPost("Register")]
         public async Task<IActionResult> Register(RegisterRequest registerRequest)
         {
-            var result = await _userService.Register(registerRequest);
+            var result = await _mediator.Send(new RegisterAccountCommand()
+            {
+                Firestname = registerRequest.Firestname,
+                Lastname = registerRequest.Lastname,
+                Address = registerRequest.Address,
+                City = registerRequest.City,
+                ConfirmPassword = registerRequest.ConfirmPassword,
+                Country = registerRequest.Country,
+                Email = registerRequest.Email,
+                Phone = registerRequest.Phone,
+                Username = registerRequest.Username,
+                Password = registerRequest.Password,
+                role = registerRequest.role,
+            });
 
             if (!result.Succeeded)
             {
@@ -37,7 +54,12 @@ namespace JopApplication.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
-            var result = await _userService.Login(loginRequest);
+            var result = await _mediator.Send(new LoginAccountCommand()
+            {
+                Email = loginRequest.Email,
+                Password = loginRequest.Password,
+                RememberMe = loginRequest.RememberMe
+            });
 
             switch (result.Status)
             {
