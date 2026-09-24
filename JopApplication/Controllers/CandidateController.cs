@@ -88,7 +88,7 @@ namespace JopApplication.Controllers
             var result = await _mediator.Send(command, cancellationToken);
             if (request == null)
             {
-                return BadRequest();
+                return BadRequest();                                     
             }
 
             return Ok(result);

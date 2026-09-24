@@ -22,9 +22,7 @@ namespace JopApplication.Features.Jops.Commands.CloseJop
             if (jop == null)
                 throw new Exception("Job not found");
 
-            jop.jopStatus = jop.jopStatus == JopStatus.Open
-                ? JopStatus.Closed
-                : JopStatus.Open;
+            jop.jopStatus = JopStatus.Closed;
 
             _jopRepository.Update(jop);
             await _jopRepository.SaveChangesAsync(cancellationToken);

@@ -1,4 +1,5 @@
 ﻿
+using Hangfire;
 using Hmoe_Maintenance.Services;
 using JopApplication.Application;
 using JopApplication.Application.Interfaces;
@@ -39,6 +40,14 @@ namespace JopApplication
                 cfg.RegisterServicesFromAssembly(
                     typeof(AssemblyHandler).Assembly));
 
+            builder.Services.AddHangfire(config =>
+               config.UseSimpleAssemblyNameTypeSerializer()
+              .UseRecommendedSerializerSettings()
+              .UseSqlServerStorage(
+                  builder.Configuration.GetConnectionString(
+                      "HangfireConnection")));
+            builder.Services.AddHangfireServer();
+
             builder.Services.AddIdentity<Appuser, IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 6;
@@ -78,6 +87,7 @@ namespace JopApplication
             //builder.Services.AddScoped<IJopService, JopService>();
             builder.Services.AddScoped<ICandidateService , CandidateService>();
             builder.Services.AddScoped<ICandidateJopAppService , CandidateJopAppService>();
+            builder.Services.AddScoped<ICloseJopRecurringJobs, CloseJopRecurringJobs>();
             builder.Services.AddScoped<ItokenService, TokenService>();
             //builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IDBIntializer, DBIntializer>();
@@ -99,6 +109,12 @@ namespace JopApplication
 
             app.UseAuthorization();
 
+            app.UseHangfireDashboard("/hangfire");
+            RecurringJob.AddOrUpdate<ICloseJopRecurringJobs>(
+    "close-expired-jobs",
+                    x => x.CloseJop(),
+                    Cron.Daily
+                );
 
             app.MapControllers();
 
